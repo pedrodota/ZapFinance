@@ -1,0 +1,17 @@
+services:
+  # Override para desenvolvimento local
+  coreservice:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.coreservice.rule=Host(`localhost`) && PathPrefix(`/api/core`)"
+
+  mobileaggregator:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.mobileaggregator.rule=Host(`localhost`) && PathPrefix(`/api/mobile`)"

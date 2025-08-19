@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "fV/hHwwm9K0lfrlnpfavvEXDOM2x70NWCYldW4J6nuQ=",
+  "Source": "MobileAggregator",
+  "BasePath": "_content/MobileAggregator",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}

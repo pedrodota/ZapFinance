@@ -1,0 +1,471 @@
+name: dockercompose7232216928691127231
+services:
+  coreservice:
+    build:
+      context: C:\Users\pedro.dota\CascadeProjects\ZapFinance
+      dockerfile: SERVICES/Core.Service/Core.Service/Dockerfile
+      args:
+        BUILD_CONFIGURATION: Debug
+        LAUNCHING_FROM_VS: "true"
+      labels:
+        com.microsoft.created-by: visual-studio
+        com.microsoft.visual-studio.project-name: Core.Service
+      target: base
+    container_name: zapfinance-coreservice
+    entrypoint:
+      - dotnet
+      - --roll-forward
+      - Major
+      - /VSTools/DistrolessHelper/DistrolessHelper.dll
+      - --wait
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_LOGGING__CONSOLE__DISABLECOLORS: "true"
+      ASPNETCORE_URLS: http://+:80
+      DOTNET_USE_POLLING_FILE_WATCHER: "1"
+      NUGET_FALLBACK_PACKAGES: /.nuget/fallbackpackages;/.nuget/fallbackpackages2
+      USE_IN_MEMORY_DATA: "true"
+    image: coreservice:dev
+    labels:
+      com.microsoft.visualstudio.debuggee.arguments: ' --additionalProbingPath /.nuget/packages --additionalProbingPath /.nuget/fallbackpackages --additionalProbingPath /.nuget/fallbackpackages2  "/app/bin/Debug/net9.0/Core.Service.dll"'
+      com.microsoft.visualstudio.debuggee.killprogram: dotnet --roll-forward Major /VSTools/DistrolessHelper/DistrolessHelper.dll --stop dotnet
+      com.microsoft.visualstudio.debuggee.program: dotnet
+      com.microsoft.visualstudio.debuggee.workingdirectory: /app
+      traefik.enable: "true"
+      traefik.http.routers.coreservice.rule: Host(`localhost`) && PathPrefix(`/api/core`)
+    networks:
+      zapfinance-network: null
+    ports:
+      - mode: ingress
+        target: 80
+        published: "5001"
+        protocol: tcp
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - type: bind
+        source: C:\Users\pedro.dota\CascadeProjects\ZapFinance\SERVICES\Core.Service\Core.Service
+        target: /app
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Users\pedro.dota\CascadeProjects\ZapFinance
+        target: /src
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Users\pedro.dota\vsdbg\vs2017u5
+        target: /remote_debugger
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Users\pedro.dota\.nuget\packages
+        target: /.nuget/packages
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages
+        target: /.nuget/fallbackpackages
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Program Files\dotnet\sdk\NuGetFallbackFolder
+        target: /.nuget/fallbackpackages2
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Users\pedro.dota\AppData\Roaming\ASP.NET\Https
+        target: /root/.aspnet/https
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Users\pedro.dota\AppData\Roaming\ASP.NET\Https
+        target: /home/app/.aspnet/https
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Users\pedro.dota\AppData\Roaming\Microsoft\UserSecrets
+        target: /root/.microsoft/usersecrets
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Users\pedro.dota\AppData\Roaming\Microsoft\UserSecrets
+        target: /home/app/.microsoft/usersecrets
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Sdks\Microsoft.Docker.Sdk\tools\linux-x64\net6.0
+        target: /VSTools
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\HotReload
+        target: /HotReloadAgent
+        read_only: true
+        bind:
+          create_host_path: true
+  integrationgateway:
+    build:
+      context: C:\Users\pedro.dota\CascadeProjects\ZapFinance
+      dockerfile: GATEWAYS/MobileAggregator/MobileAggregator/Dockerfile
+      args:
+        BUILD_CONFIGURATION: Debug
+        LAUNCHING_FROM_VS: "true"
+      labels:
+        com.microsoft.created-by: visual-studio
+        com.microsoft.visual-studio.project-name: MobileAggregator
+      target: base
+    container_name: zapfinance-integrationgateway
+    depends_on:
+      coreservice:
+        condition: service_started
+        required: true
+    entrypoint:
+      - dotnet
+      - --roll-forward
+      - Major
+      - /VSTools/DistrolessHelper/DistrolessHelper.dll
+      - --wait
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_LOGGING__CONSOLE__DISABLECOLORS: "true"
+      ASPNETCORE_URLS: http://+:80
+      ConnectionStrings__CoreService: http://coreservice:80
+      DOTNET_USE_POLLING_FILE_WATCHER: "1"
+      Jwt__Audience: ZapFinance.Integration
+      Jwt__Issuer: ZapFinance.IntegrationGateway
+      Jwt__Key: ZapFinance-Super-Secret-Key-For-JWT-Token-Generation-2024
+      NUGET_FALLBACK_PACKAGES: /.nuget/fallbackpackages;/.nuget/fallbackpackages2
+    image: integrationgateway:dev
+    labels:
+      com.microsoft.visualstudio.debuggee.arguments: ' --additionalProbingPath /.nuget/packages --additionalProbingPath /.nuget/fallbackpackages --additionalProbingPath /.nuget/fallbackpackages2  "/app/bin/Debug/net9.0/MobileAggregator.dll"'
+      com.microsoft.visualstudio.debuggee.killprogram: dotnet --roll-forward Major /VSTools/DistrolessHelper/DistrolessHelper.dll --stop dotnet
+      com.microsoft.visualstudio.debuggee.program: dotnet
+      com.microsoft.visualstudio.debuggee.workingdirectory: /app
+    networks:
+      zapfinance-network: null
+    ports:
+      - mode: ingress
+        target: 80
+        published: "5004"
+        protocol: tcp
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - type: bind
+        source: C:\Users\pedro.dota\CascadeProjects\ZapFinance\GATEWAYS\MobileAggregator\MobileAggregator
+        target: /app
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Users\pedro.dota\CascadeProjects\ZapFinance
+        target: /src
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Users\pedro.dota\vsdbg\vs2017u5
+        target: /remote_debugger
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Users\pedro.dota\.nuget\packages
+        target: /.nuget/packages
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages
+        target: /.nuget/fallbackpackages
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Program Files\dotnet\sdk\NuGetFallbackFolder
+        target: /.nuget/fallbackpackages2
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Users\pedro.dota\AppData\Roaming\ASP.NET\Https
+        target: /root/.aspnet/https
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Users\pedro.dota\AppData\Roaming\ASP.NET\Https
+        target: /home/app/.aspnet/https
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Users\pedro.dota\AppData\Roaming\Microsoft\UserSecrets
+        target: /root/.microsoft/usersecrets
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Users\pedro.dota\AppData\Roaming\Microsoft\UserSecrets
+        target: /home/app/.microsoft/usersecrets
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Sdks\Microsoft.Docker.Sdk\tools\linux-x64\net6.0
+        target: /VSTools
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\HotReload
+        target: /HotReloadAgent
+        read_only: true
+        bind:
+          create_host_path: true
+  mobileaggregator:
+    build:
+      context: C:\Users\pedro.dota\CascadeProjects\ZapFinance
+      dockerfile: GATEWAYS/MobileAggregator/MobileAggregator/Dockerfile
+      args:
+        BUILD_CONFIGURATION: Debug
+        LAUNCHING_FROM_VS: "true"
+      labels:
+        com.microsoft.created-by: visual-studio
+        com.microsoft.visual-studio.project-name: MobileAggregator
+      target: base
+    container_name: zapfinance-mobileaggregator
+    depends_on:
+      coreservice:
+        condition: service_started
+        required: true
+    entrypoint:
+      - dotnet
+      - --roll-forward
+      - Major
+      - /VSTools/DistrolessHelper/DistrolessHelper.dll
+      - --wait
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_LOGGING__CONSOLE__DISABLECOLORS: "true"
+      ASPNETCORE_URLS: http://+:80
+      ConnectionStrings__CoreService: http://coreservice:80
+      DOTNET_USE_POLLING_FILE_WATCHER: "1"
+      Jwt__Audience: ZapFinance.Mobile
+      Jwt__Issuer: ZapFinance.MobileAggregator
+      Jwt__Key: ZapFinance-Super-Secret-Key-For-JWT-Token-Generation-2024
+      NUGET_FALLBACK_PACKAGES: /.nuget/fallbackpackages;/.nuget/fallbackpackages2
+    image: mobileaggregator:dev
+    labels:
+      com.microsoft.visualstudio.debuggee.arguments: ' --additionalProbingPath /.nuget/packages --additionalProbingPath /.nuget/fallbackpackages --additionalProbingPath /.nuget/fallbackpackages2  "/app/bin/Debug/net9.0/MobileAggregator.dll"'
+      com.microsoft.visualstudio.debuggee.killprogram: dotnet --roll-forward Major /VSTools/DistrolessHelper/DistrolessHelper.dll --stop dotnet
+      com.microsoft.visualstudio.debuggee.program: dotnet
+      com.microsoft.visualstudio.debuggee.workingdirectory: /app
+      traefik.enable: "true"
+      traefik.http.routers.mobileaggregator.rule: Host(`localhost`) && PathPrefix(`/api/mobile`)
+    networks:
+      zapfinance-network: null
+    ports:
+      - mode: ingress
+        target: 80
+        published: "5002"
+        protocol: tcp
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - type: bind
+        source: C:\Users\pedro.dota\CascadeProjects\ZapFinance\GATEWAYS\MobileAggregator\MobileAggregator
+        target: /app
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Users\pedro.dota\CascadeProjects\ZapFinance
+        target: /src
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Users\pedro.dota\vsdbg\vs2017u5
+        target: /remote_debugger
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Users\pedro.dota\.nuget\packages
+        target: /.nuget/packages
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages
+        target: /.nuget/fallbackpackages
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Program Files\dotnet\sdk\NuGetFallbackFolder
+        target: /.nuget/fallbackpackages2
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Users\pedro.dota\AppData\Roaming\ASP.NET\Https
+        target: /root/.aspnet/https
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Users\pedro.dota\AppData\Roaming\ASP.NET\Https
+        target: /home/app/.aspnet/https
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Users\pedro.dota\AppData\Roaming\Microsoft\UserSecrets
+        target: /root/.microsoft/usersecrets
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Users\pedro.dota\AppData\Roaming\Microsoft\UserSecrets
+        target: /home/app/.microsoft/usersecrets
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Sdks\Microsoft.Docker.Sdk\tools\linux-x64\net6.0
+        target: /VSTools
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\HotReload
+        target: /HotReloadAgent
+        read_only: true
+        bind:
+          create_host_path: true
+  webgateway:
+    build:
+      context: C:\Users\pedro.dota\CascadeProjects\ZapFinance
+      dockerfile: GATEWAYS/MobileAggregator/MobileAggregator/Dockerfile
+      args:
+        BUILD_CONFIGURATION: Debug
+        LAUNCHING_FROM_VS: "true"
+      labels:
+        com.microsoft.created-by: visual-studio
+        com.microsoft.visual-studio.project-name: MobileAggregator
+      target: base
+    container_name: zapfinance-webgateway
+    depends_on:
+      coreservice:
+        condition: service_started
+        required: true
+    entrypoint:
+      - dotnet
+      - --roll-forward
+      - Major
+      - /VSTools/DistrolessHelper/DistrolessHelper.dll
+      - --wait
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_LOGGING__CONSOLE__DISABLECOLORS: "true"
+      ASPNETCORE_URLS: http://+:80
+      ConnectionStrings__CoreService: http://coreservice:80
+      DOTNET_USE_POLLING_FILE_WATCHER: "1"
+      Jwt__Audience: ZapFinance.Web
+      Jwt__Issuer: ZapFinance.WebGateway
+      Jwt__Key: ZapFinance-Super-Secret-Key-For-JWT-Token-Generation-2024
+      NUGET_FALLBACK_PACKAGES: /.nuget/fallbackpackages;/.nuget/fallbackpackages2
+    image: webgateway:dev
+    labels:
+      com.microsoft.visualstudio.debuggee.arguments: ' --additionalProbingPath /.nuget/packages --additionalProbingPath /.nuget/fallbackpackages --additionalProbingPath /.nuget/fallbackpackages2  "/app/bin/Debug/net9.0/MobileAggregator.dll"'
+      com.microsoft.visualstudio.debuggee.killprogram: dotnet --roll-forward Major /VSTools/DistrolessHelper/DistrolessHelper.dll --stop dotnet
+      com.microsoft.visualstudio.debuggee.program: dotnet
+      com.microsoft.visualstudio.debuggee.workingdirectory: /app
+    networks:
+      zapfinance-network: null
+    ports:
+      - mode: ingress
+        target: 80
+        published: "5003"
+        protocol: tcp
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - type: bind
+        source: C:\Users\pedro.dota\CascadeProjects\ZapFinance\GATEWAYS\MobileAggregator\MobileAggregator
+        target: /app
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Users\pedro.dota\CascadeProjects\ZapFinance
+        target: /src
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Users\pedro.dota\vsdbg\vs2017u5
+        target: /remote_debugger
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Users\pedro.dota\.nuget\packages
+        target: /.nuget/packages
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages
+        target: /.nuget/fallbackpackages
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Program Files\dotnet\sdk\NuGetFallbackFolder
+        target: /.nuget/fallbackpackages2
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Users\pedro.dota\AppData\Roaming\ASP.NET\Https
+        target: /root/.aspnet/https
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Users\pedro.dota\AppData\Roaming\ASP.NET\Https
+        target: /home/app/.aspnet/https
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Users\pedro.dota\AppData\Roaming\Microsoft\UserSecrets
+        target: /root/.microsoft/usersecrets
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Users\pedro.dota\AppData\Roaming\Microsoft\UserSecrets
+        target: /home/app/.microsoft/usersecrets
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Sdks\Microsoft.Docker.Sdk\tools\linux-x64\net6.0
+        target: /VSTools
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\HotReload
+        target: /HotReloadAgent
+        read_only: true
+        bind:
+          create_host_path: true
+networks:
+  zapfinance-network:
+    name: dockercompose7232216928691127231_zapfinance-network
+    driver: bridge

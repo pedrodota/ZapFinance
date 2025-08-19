@@ -1,0 +1,80 @@
+version: '3.8'
+
+services:
+  # SQL Server Database
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: zapfinance-sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourStrong@Passw0rd
+      - MSSQL_PID=Express
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    networks:
+      - zapfinance-network
+    restart: unless-stopped
+
+  # Core Service (gRPC + REST)
+  coreservice:
+    build:
+      context: .
+      dockerfile: SERVICES/Core.Service/Core.Service/Dockerfile
+    container_name: zapfinance-coreservice
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=ZapFinanceDb;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=true;
+    ports:
+      - "5001:80"
+    depends_on:
+      - sqlserver
+    networks:
+      - zapfinance-network
+    restart: unless-stopped
+
+  # Mobile Aggregator Gateway
+  mobileaggregator:
+    build:
+      context: .
+      dockerfile: GATEWAYS/MobileAggregator/MobileAggregator/Dockerfile
+    container_name: zapfinance-mobileaggregator
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__CoreService=http://coreservice:80
+      - Jwt__Key=ZapFinance-Super-Secret-Key-For-JWT-Token-Generation-2024
+      - Jwt__Issuer=ZapFinance.MobileAggregator
+      - Jwt__Audience=ZapFinance.Mobile
+    ports:
+      - "5002:80"
+    depends_on:
+      - coreservice
+    networks:
+      - zapfinance-network
+    restart: unless-stopped
+
+  # Nginx Load Balancer / API Gateway
+  nginx:
+    image: nginx:alpine
+    container_name: zapfinance-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - mobileaggregator
+    networks:
+      - zapfinance-network
+    restart: unless-stopped
+
+volumes:
+  sqlserver_data:
+    driver: local
+
+networks:
+  zapfinance-network:
+    driver: bridge

@@ -1,0 +1,101 @@
+name: dockercompose7232216928691127231
+services:
+  coreservice:
+    build:
+      context: C:\Users\pedro.dota\CascadeProjects\ZapFinance
+      dockerfile: SERVICES/Core.Service/Core.Service/Dockerfile
+    container_name: zapfinance-coreservice
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:80
+      USE_IN_MEMORY_DATA: "true"
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.coreservice.rule: Host(`localhost`) && PathPrefix(`/api/core`)
+    networks:
+      zapfinance-network: null
+    ports:
+      - mode: ingress
+        target: 80
+        published: "5001"
+        protocol: tcp
+    restart: unless-stopped
+  integrationgateway:
+    build:
+      context: C:\Users\pedro.dota\CascadeProjects\ZapFinance
+      dockerfile: GATEWAYS/MobileAggregator/MobileAggregator/Dockerfile
+    container_name: zapfinance-integrationgateway
+    depends_on:
+      coreservice:
+        condition: service_started
+        required: true
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:80
+      ConnectionStrings__CoreService: http://coreservice:80
+      Jwt__Audience: ZapFinance.Integration
+      Jwt__Issuer: ZapFinance.IntegrationGateway
+      Jwt__Key: ZapFinance-Super-Secret-Key-For-JWT-Token-Generation-2024
+    networks:
+      zapfinance-network: null
+    ports:
+      - mode: ingress
+        target: 80
+        published: "5004"
+        protocol: tcp
+    restart: unless-stopped
+  mobileaggregator:
+    build:
+      context: C:\Users\pedro.dota\CascadeProjects\ZapFinance
+      dockerfile: GATEWAYS/MobileAggregator/MobileAggregator/Dockerfile
+    container_name: zapfinance-mobileaggregator
+    depends_on:
+      coreservice:
+        condition: service_started
+        required: true
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:80
+      ConnectionStrings__CoreService: http://coreservice:80
+      Jwt__Audience: ZapFinance.Mobile
+      Jwt__Issuer: ZapFinance.MobileAggregator
+      Jwt__Key: ZapFinance-Super-Secret-Key-For-JWT-Token-Generation-2024
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.mobileaggregator.rule: Host(`localhost`) && PathPrefix(`/api/mobile`)
+    networks:
+      zapfinance-network: null
+    ports:
+      - mode: ingress
+        target: 80
+        published: "5002"
+        protocol: tcp
+    restart: unless-stopped
+  webgateway:
+    build:
+      context: C:\Users\pedro.dota\CascadeProjects\ZapFinance
+      dockerfile: GATEWAYS/MobileAggregator/MobileAggregator/Dockerfile
+    container_name: zapfinance-webgateway
+    depends_on:
+      coreservice:
+        condition: service_started
+        required: true
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:80
+      ConnectionStrings__CoreService: http://coreservice:80
+      Jwt__Audience: ZapFinance.Web
+      Jwt__Issuer: ZapFinance.WebGateway
+      Jwt__Key: ZapFinance-Super-Secret-Key-For-JWT-Token-Generation-2024
+    networks:
+      zapfinance-network: null
+    ports:
+      - mode: ingress
+        target: 80
+        published: "5003"
+        protocol: tcp
+    restart: unless-stopped
+networks:
+  zapfinance-network:
+    name: dockercompose7232216928691127231_zapfinance-network
+    driver: bridge

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" Sdk="Microsoft.Docker.Sdk">
+  <PropertyGroup Label="Globals">
+    <ProjectVersion>2.1</ProjectVersion>
+    <DockerTargetOS>Linux</DockerTargetOS>
+    <ProjectGuid>3E8B9F4A-1234-5678-9ABC-DEF012345678</ProjectGuid>
+    <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
+    <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
+    <DockerServiceName>nginx</DockerServiceName>
+  </PropertyGroup>
+  <ItemGroup>
+    <DockerComposeFile Include="docker-compose.yml" />
+    <DockerComposeFile Include="docker-compose.override.yml" Condition="Exists('docker-compose.override.yml')" />
+    <DockerComposeFile Include="docker-compose.production.yml" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package core;
+
+option csharp_namespace = "ZapFinance.ProtoServer.Core";
+
+// Serviço de recibo para operações do core
+service ReceiptService {
+  rpc UploadReceipt(UploadReceiptRequest) returns (ReceiptResponse);
+  rpc GetReceipt(GetReceiptRequest) returns (ReceiptResponse);
+  rpc ListReceipts(ListReceiptsRequest) returns (ListReceiptsResponse);
+  rpc DeleteReceipt(DeleteReceiptRequest) returns (DeleteReceiptResponse);
+  rpc UpdateReceipt(UpdateReceiptRequest) returns (ReceiptResponse);
+}
+
+// Mensagens de Request
+message UploadReceiptRequest {
+  string usuario_id = 1;
+  string nome_arquivo = 2;
+  bytes imagem_data = 3;
+  string tipo_mime = 4;
+  string descricao = 5;
+  double valor = 6;
+  string categoria = 7;
+}
+
+message GetReceiptRequest {
+  string receipt_id = 1;
+}
+
+message UpdateReceiptRequest {
+  string receipt_id = 1;
+  string descricao = 2;
+  double valor = 3;
+  string categoria = 4;
+}
+
+message ListReceiptsRequest {
+  string usuario_id = 1;
+  int32 pagina = 2;
+  int32 tamanho_pagina = 3;
+  string filtro = 4;
+  string categoria = 5;
+}
+
+message DeleteReceiptRequest {
+  string receipt_id = 1;
+}
+
+// Mensagens de Response
+message ReceiptResponse {
+  string receipt_id = 1;
+  string usuario_id = 2;
+  string nome_arquivo = 3;
+  string caminho_arquivo = 4;
+  string tipo_mime = 5;
+  string descricao = 6;
+  double valor = 7;
+  string categoria = 8;
+  string data_upload = 9;
+  string data_atualizacao = 10;
+  bool ativo = 11;
+}
+
+message ListReceiptsResponse {
+  repeated ReceiptResponse receipts = 1;
+  int32 total = 2;
+  int32 pagina = 3;
+  int32 total_paginas = 4;
+}
+
+message DeleteReceiptResponse {
+  bool sucesso = 1;
+  string mensagem = 2;
+}

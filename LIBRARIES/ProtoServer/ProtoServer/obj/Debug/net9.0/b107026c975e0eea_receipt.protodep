@@ -1,0 +1,2 @@
+obj\Debug\net9.0\protos\core/Receipt.cs \
+obj\Debug\net9.0\protos\core/ReceiptGrpc.cs: protos/core/receipt.proto

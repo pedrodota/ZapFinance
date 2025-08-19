@@ -1,0 +1,79 @@
+syntax = "proto3";
+
+package core;
+
+option csharp_namespace = "ZapFinance.ProtoServer.Core";
+
+// Serviço de usuário para operações do core
+service UsuarioService {
+  rpc CriarUsuario(CriarUsuarioRequest) returns (UsuarioResponse);
+  rpc ObterUsuario(ObterUsuarioRequest) returns (UsuarioResponse);
+  rpc AtualizarUsuario(AtualizarUsuarioRequest) returns (UsuarioResponse);
+  rpc ListarUsuarios(ListarUsuariosRequest) returns (ListarUsuariosResponse);
+  rpc DeletarUsuario(DeletarUsuarioRequest) returns (DeletarUsuarioResponse);
+}
+
+// Mensagens de Request
+message CriarUsuarioRequest {
+  string nome = 1;
+  string email = 2;
+  string telefone = 3;
+  string documento = 4;
+  TipoDocumento tipo_documento = 5;
+}
+
+message ObterUsuarioRequest {
+  string usuario_id = 1;
+}
+
+message AtualizarUsuarioRequest {
+  string usuario_id = 1;
+  string nome = 2;
+  string email = 3;
+  string telefone = 4;
+  bool ativo = 5;
+}
+
+message ListarUsuariosRequest {
+  int32 pagina = 1;
+  int32 tamanho_pagina = 2;
+  string filtro = 3;
+  string email = 4;
+}
+
+message DeletarUsuarioRequest {
+  string usuario_id = 1;
+}
+
+// Mensagens de Response
+message UsuarioResponse {
+  string usuario_id = 1;
+  string nome = 2;
+  string email = 3;
+  string telefone = 4;
+  string documento = 5;
+  TipoDocumento tipo_documento = 6;
+  bool ativo = 7;
+  string data_criacao = 8;
+  string data_atualizacao = 9;
+  string senha = 10;
+}
+
+message ListarUsuariosResponse {
+  repeated UsuarioResponse usuarios = 1;
+  int32 total = 2;
+  int32 pagina = 3;
+  int32 total_paginas = 4;
+}
+
+message DeletarUsuarioResponse {
+  bool sucesso = 1;
+  string mensagem = 2;
+}
+
+// Enums
+enum TipoDocumento {
+  CPF = 0;
+  CNPJ = 1;
+  PASSAPORTE = 2;
+}

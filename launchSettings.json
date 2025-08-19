@@ -1,0 +1,23 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "composePath": "docker-compose.yml",
+      "serviceActions": {
+        "nginx": "StartDebugging",
+        "coreservice": "StartDebugging",
+        "mobileaggregator": "StartDebugging"
+      },
+      "launchBrowser": true,
+      "launchUrl": "http://localhost"
+    },
+    "Start All Services": {
+      "commandName": "Executable",
+      "executablePath": "powershell.exe",
+      "commandLineArgs": "-ExecutionPolicy Bypass -File \"start-zapfinance.ps1\"",
+      "workingDirectory": ".",
+      "launchBrowser": true,
+      "launchUrl": "http://localhost"
+    }
+  }
+}

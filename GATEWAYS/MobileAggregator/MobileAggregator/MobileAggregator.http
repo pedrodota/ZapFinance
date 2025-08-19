@@ -1,0 +1,6 @@
+@MobileAggregator_HostAddress = http://localhost:5012
+
+GET {{MobileAggregator_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

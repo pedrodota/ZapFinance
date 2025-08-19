@@ -1,0 +1,96 @@
+syntax = "proto3";
+
+package identity;
+
+option csharp_namespace = "ZapFinance.ProtoServer.Identity";
+
+// Serviço de identidade e autenticação
+service IdentityService {
+  rpc Autenticar(AutenticarRequest) returns (AutenticarResponse);
+  rpc ValidarToken(ValidarTokenRequest) returns (ValidarTokenResponse);
+  rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse);
+  rpc AlterarSenha(AlterarSenhaRequest) returns (AlterarSenhaResponse);
+  rpc RecuperarSenha(RecuperarSenhaRequest) returns (RecuperarSenhaResponse);
+  rpc CriarCredencial(CriarCredencialRequest) returns (CriarCredencialResponse);
+}
+
+// Mensagens de Request
+message AutenticarRequest {
+  string email = 1;
+  string senha = 2;
+  string dispositivo = 3;
+}
+
+message ValidarTokenRequest {
+  string token = 1;
+}
+
+message RefreshTokenRequest {
+  string refresh_token = 1;
+}
+
+message AlterarSenhaRequest {
+  string usuario_id = 1;
+  string senha_atual = 2;
+  string nova_senha = 3;
+}
+
+message RecuperarSenhaRequest {
+  string email = 1;
+}
+
+message CriarCredencialRequest {
+  string usuario_id = 1;
+  string email = 2;
+  string senha = 3;
+}
+
+// Mensagens de Response
+message AutenticarResponse {
+  bool sucesso = 1;
+  string token = 2;
+  string refresh_token = 3;
+  int64 expires_in = 4;
+  UsuarioIdentity usuario = 5;
+  string mensagem = 6;
+}
+
+message ValidarTokenResponse {
+  bool valido = 1;
+  UsuarioIdentity usuario = 2;
+  string mensagem = 3;
+}
+
+message RefreshTokenResponse {
+  bool sucesso = 1;
+  string token = 2;
+  string refresh_token = 3;
+  int64 expires_in = 4;
+  string mensagem = 5;
+}
+
+message AlterarSenhaResponse {
+  bool sucesso = 1;
+  string mensagem = 2;
+}
+
+message RecuperarSenhaResponse {
+  bool sucesso = 1;
+  string mensagem = 2;
+}
+
+message CriarCredencialResponse {
+  bool sucesso = 1;
+  string usuario_id = 2;
+  string mensagem = 3;
+}
+
+// Modelos
+message UsuarioIdentity {
+  string usuario_id = 1;
+  string email = 2;
+  string nome = 3;
+  repeated string roles = 4;
+  repeated string permissions = 5;
+  bool ativo = 6;
+}
