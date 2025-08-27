@@ -1,0 +1,49 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\pedro.dota\\Desktop\\ZapFinance\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{F5BDFB09-B035-4266-A26C-A7DF7ABC2009}|SERVICES\\Core.Service\\Core.Service\\Core.Service.csproj|c:\\users\\pedro.dota\\desktop\\zapfinance\\services\\core.service\\core.service\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{F5BDFB09-B035-4266-A26C-A7DF7ABC2009}|SERVICES\\Core.Service\\Core.Service\\Core.Service.csproj|solutionrelative:services\\core.service\\core.service\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:133:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:132:0:{13b12e3e-c1b4-4539-9371-4fe9a0d523fc}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:131:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\pedro.dota\\Desktop\\ZapFinance\\SERVICES\\Core.Service\\Core.Service\\appsettings.json",
+              "RelativeDocumentMoniker": "SERVICES\\Core.Service\\Core.Service\\appsettings.json",
+              "ToolTip": "C:\\Users\\pedro.dota\\Desktop\\ZapFinance\\SERVICES\\Core.Service\\Core.Service\\appsettings.json",
+              "RelativeToolTip": "SERVICES\\Core.Service\\Core.Service\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-08-19T23:04:45.196Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

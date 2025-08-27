@@ -13,12 +13,13 @@ builder.WebHost.ConfigureKestrel(options =>
     // Enable HTTP/2 over HTTP (without TLS) for Docker containers
     options.ConfigureEndpointDefaults(listenOptions =>
     {
-        listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http2;
+        listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http1AndHttp2;
     });
 });
 
 // Add services to the container
 builder.Services.AddGrpc();
+builder.Services.AddControllers();
 
 // Entity Framework
 builder.Services.AddDbContext<ZapFinanceDbContext>(options =>
@@ -30,8 +31,10 @@ builder.Services.AddScoped<IReceiptRepository, ReceiptRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // Services
-builder.Services.AddHttpClient<GoogleVisionService>();
-builder.Services.AddScoped<IGoogleVisionService, GoogleVisionService>();
+builder.Services.AddHttpClient<GoogleGeminiService>();
+builder.Services.AddScoped<IGoogleGeminiService, GoogleGeminiService>();
+builder.Services.AddHttpClient<WhatsAppService>();
+builder.Services.AddScoped<IWhatsAppService, WhatsAppService>();
 
 // Health checks
 builder.Services.AddHealthChecks()
@@ -63,6 +66,9 @@ if (app.Environment.IsDevelopment())
 // gRPC services
 app.MapGrpcService<UsuarioGrpcService>();
 app.MapGrpcService<ReceiptGrpcService>();
+
+// HTTP Controllers
+app.MapControllers();
 
 // Health check endpoint
 app.MapHealthChecks("/health");

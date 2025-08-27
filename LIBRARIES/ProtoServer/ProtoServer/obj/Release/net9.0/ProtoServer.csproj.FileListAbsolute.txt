@@ -1,0 +1,13 @@
+C:\Users\pedro.dota\Desktop\ZapFinance\LIBRARIES\ProtoServer\ProtoServer\bin\Release\net9.0\ProtoServer.deps.json
+C:\Users\pedro.dota\Desktop\ZapFinance\LIBRARIES\ProtoServer\ProtoServer\bin\Release\net9.0\ProtoServer.dll
+C:\Users\pedro.dota\Desktop\ZapFinance\LIBRARIES\ProtoServer\ProtoServer\bin\Release\net9.0\ProtoServer.pdb
+C:\Users\pedro.dota\Desktop\ZapFinance\LIBRARIES\ProtoServer\ProtoServer\obj\Release\net9.0\ProtoServer.csproj.AssemblyReference.cache
+C:\Users\pedro.dota\Desktop\ZapFinance\LIBRARIES\ProtoServer\ProtoServer\obj\Release\net9.0\ProtoServer.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\pedro.dota\Desktop\ZapFinance\LIBRARIES\ProtoServer\ProtoServer\obj\Release\net9.0\ProtoServer.AssemblyInfoInputs.cache
+C:\Users\pedro.dota\Desktop\ZapFinance\LIBRARIES\ProtoServer\ProtoServer\obj\Release\net9.0\ProtoServer.AssemblyInfo.cs
+C:\Users\pedro.dota\Desktop\ZapFinance\LIBRARIES\ProtoServer\ProtoServer\obj\Release\net9.0\ProtoServer.csproj.CoreCompileInputs.cache
+C:\Users\pedro.dota\Desktop\ZapFinance\LIBRARIES\ProtoServer\ProtoServer\obj\Release\net9.0\ProtoServer.sourcelink.json
+C:\Users\pedro.dota\Desktop\ZapFinance\LIBRARIES\ProtoServer\ProtoServer\obj\Release\net9.0\ProtoServer.dll
+C:\Users\pedro.dota\Desktop\ZapFinance\LIBRARIES\ProtoServer\ProtoServer\obj\Release\net9.0\refint\ProtoServer.dll
+C:\Users\pedro.dota\Desktop\ZapFinance\LIBRARIES\ProtoServer\ProtoServer\obj\Release\net9.0\ProtoServer.pdb
+C:\Users\pedro.dota\Desktop\ZapFinance\LIBRARIES\ProtoServer\ProtoServer\obj\Release\net9.0\ref\ProtoServer.dll

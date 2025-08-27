@@ -7,6 +7,7 @@ public interface IUsuarioRepository
     Task<Usuario?> ObterPorIdAsync(Guid id);
     Task<Usuario?> ObterPorEmailAsync(string email);
     Task<Usuario?> ObterPorDocumentoAsync(string documento);
+    Task<Usuario?> ObterPorWhatsAppAsync(string whatsAppNumber);
     Task<IEnumerable<Usuario>> ListarAsync(int pagina, int tamanhoPagina, string? filtro = null);
     Task<int> ContarAsync(string? filtro = null);
     Task<Usuario> CriarAsync(Usuario usuario);

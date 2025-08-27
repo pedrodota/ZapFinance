@@ -31,6 +31,12 @@ public class UsuarioRepository : IUsuarioRepository
             .FirstOrDefaultAsync(u => u.Documento == documento && u.Ativo);
     }
 
+    public async Task<Usuario?> ObterPorWhatsAppAsync(string whatsAppNumber)
+    {
+        return await _context.Usuarios
+            .FirstOrDefaultAsync(u => u.WhatsAppNumber == whatsAppNumber && u.Ativo);
+    }
+
     public async Task<IEnumerable<Usuario>> ListarAsync(int pagina, int tamanhoPagina, string? filtro = null)
     {
         var query = _context.Usuarios.Where(u => u.Ativo);

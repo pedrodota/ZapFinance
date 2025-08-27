@@ -18,6 +18,9 @@ public class Usuario
     [MaxLength(20)]
     public string? Telefone { get; set; }
     
+    [MaxLength(20)]
+    public string? WhatsAppNumber { get; set; }
+    
     [Required]
     [MaxLength(20)]
     public string Documento { get; set; } = string.Empty;

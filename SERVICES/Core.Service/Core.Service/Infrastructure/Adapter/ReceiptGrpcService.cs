@@ -10,18 +10,18 @@ public class ReceiptGrpcService : ZapFinance.ProtoServer.Core.ReceiptService.Rec
 {
     private readonly IReceiptRepository _receiptRepository;
     private readonly IUsuarioRepository _usuarioRepository;
-    private readonly IGoogleVisionService _googleVisionService;
+    private readonly IGoogleGeminiService _googleGeminiService;
     private readonly ILogger<ReceiptGrpcService> _logger;
 
     public ReceiptGrpcService(
         IReceiptRepository receiptRepository,
         IUsuarioRepository usuarioRepository,
-        IGoogleVisionService googleVisionService,
+        IGoogleGeminiService googleGeminiService,
         ILogger<ReceiptGrpcService> logger)
     {
         _receiptRepository = receiptRepository;
         _usuarioRepository = usuarioRepository;
-        _googleVisionService = googleVisionService;
+        _googleGeminiService = googleGeminiService;
         _logger = logger;
     }
 
@@ -45,17 +45,17 @@ public class ReceiptGrpcService : ZapFinance.ProtoServer.Core.ReceiptService.Rec
             var fileName = $"{Guid.NewGuid()}{fileExtension}";
             var filePath = Path.Combine(uploadsPath, fileName);
 
-            // Converter para base64 e processar com Google Vision
+            // Converter para base64 e processar com Google Gemini
             var imageBytes = request.ImagemData.ToByteArray();
             var base64String = Convert.ToBase64String(imageBytes);
             
-            // Analisar recibo com Google Vision
-            var visionResult = await _googleVisionService.AnalyzeReceiptAsync(base64String);
+            // Analisar recibo com Google Gemini
+            var geminiResult = await _googleGeminiService.AnalyzeReceiptImageAsync(base64String);
             
             // Salvar arquivo
             await File.WriteAllBytesAsync(filePath, imageBytes);
 
-            // Criar entidade Receipt com dados do Google Vision
+            // Criar entidade Receipt com dados do Google Gemini
             var receipt = new Receipt
             {
                 Id = Guid.NewGuid(),
@@ -63,9 +63,10 @@ public class ReceiptGrpcService : ZapFinance.ProtoServer.Core.ReceiptService.Rec
                 NomeArquivo = request.NomeArquivo,
                 CaminhoArquivo = filePath,
                 TipoMime = request.TipoMime,
-                Descricao =  "Recibo",
-                Valor =  0,
-                Categoria = !string.IsNullOrEmpty(request.Categoria) ? request.Categoria : "Geral"
+                Descricao = geminiResult.IsSuccessful ? geminiResult.MerchantName ?? "Recibo" : "Recibo",
+                Valor = geminiResult.IsSuccessful ? geminiResult.ExtractedAmount ?? 0 : 0,
+                Categoria = !string.IsNullOrEmpty(request.Categoria) ? request.Categoria : 
+                           (geminiResult.IsSuccessful && !string.IsNullOrEmpty(geminiResult.Category) ? geminiResult.Category : "Geral")
             };
 
             // Validar se é uma imagem válida

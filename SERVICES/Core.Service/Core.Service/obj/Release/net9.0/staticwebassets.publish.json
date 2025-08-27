@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "GNHxZBT3VRyMAyDFxlqIoSud5e9VHvq56vDdr6Qab4A=",
+  "Source": "Core.Service",
+  "BasePath": "_content/Core.Service",
+  "Mode": "Default",
+  "ManifestType": "Publish",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}
