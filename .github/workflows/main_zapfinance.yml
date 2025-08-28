@@ -21,13 +21,13 @@ jobs:
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '9.x'
+          dotnet-version: '9.0.x'
 
       - name: Build with dotnet
-        run: dotnet build --configuration Release
+        run: dotnet build SERVICES/Core.Service/Core.Service/Core.Service.csproj --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish SERVICES/Core.Service/Core.Service/Core.Service.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -38,6 +38,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
       id-token: write #This is required for requesting the JWT
       contents: read #This is required for actions/checkout
@@ -51,9 +54,9 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_BFEF9BE187D4463F867244151B466813 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_2598D21757124F2EB51182A4F7CCF84A }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_55ECFCD8D1A340B1ADD49A0D8D68BA7E }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_8B5E4F2A3C1D4E5F6A7B8C9D0E1F2A3B }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_4C5D6E7F8A9B0C1D2E3F4A5B6C7D8E9F }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_1A2B3C4D5E6F7A8B9C0D1E2F3A4B5C6D }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
@@ -62,4 +65,3 @@ jobs:
           app-name: 'zapfinance'
           slot-name: 'Production'
           package: .
-          
