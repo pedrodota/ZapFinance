@@ -12,23 +12,15 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Set up .NET Core
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '9.0.x'
-
-      - name: Build with dotnet
-        run: dotnet build SERVICES/Core.Service/Core.Service/Core.Service.csproj --configuration Release
-
-      - name: dotnet publish
-        run: dotnet publish SERVICES/Core.Service/Core.Service/Core.Service.csproj -c Release -o ./publish
+      
+      - name: Build image
+        run: docker build -t zapfinanceapi .
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: .net-app
-          path: ./publish
+          path: .
 
   deploy:
     runs-on: ubuntu-latest
