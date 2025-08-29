@@ -189,3 +189,10 @@ C:\Users\pedro.dota\Desktop\ZapFinance\SERVICES\Core.Service\Core.Service\obj\Re
 C:\Users\pedro.dota\Desktop\ZapFinance\SERVICES\Core.Service\Core.Service\obj\Release\net9.0\Core.Service.pdb
 C:\Users\pedro.dota\Desktop\ZapFinance\SERVICES\Core.Service\Core.Service\obj\Release\net9.0\Core.Service.genruntimeconfig.cache
 C:\Users\pedro.dota\Desktop\ZapFinance\SERVICES\Core.Service\Core.Service\obj\Release\net9.0\ref\Core.Service.dll
+C:\Users\pedro.dota\Desktop\ZapFinance\SERVICES\Core.Service\Core.Service\bin\Release\net9.0\publish\web.config
+C:\Users\pedro.dota\Desktop\ZapFinance\SERVICES\Core.Service\Core.Service\bin\Release\net9.0\publish\appsettings.Development.json
+C:\Users\pedro.dota\Desktop\ZapFinance\SERVICES\Core.Service\Core.Service\bin\Release\net9.0\publish\appsettings.json
+C:\Users\pedro.dota\Desktop\ZapFinance\SERVICES\Core.Service\Core.Service\bin\Release\net9.0\publish\appsettings.Production.json
+C:\Users\pedro.dota\Desktop\ZapFinance\SERVICES\Core.Service\Core.Service\bin\Release\net9.0\publish\Core.Service.deps.json
+C:\Users\pedro.dota\Desktop\ZapFinance\SERVICES\Core.Service\Core.Service\bin\Release\net9.0\publish\Core.Service.runtimeconfig.json
+C:\Users\pedro.dota\Desktop\ZapFinance\SERVICES\Core.Service\Core.Service\bin\Release\net9.0\publish\Core.Service.staticwebassets.endpoints.json
