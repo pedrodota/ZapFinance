@@ -45,7 +45,7 @@ jobs:
         with:
           name: .net-app
       
-      - name: Login to Azure
+      - name: Azure Login
         uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID }}
