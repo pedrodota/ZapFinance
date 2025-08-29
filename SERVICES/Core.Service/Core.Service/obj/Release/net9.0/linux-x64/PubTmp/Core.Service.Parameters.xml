@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="IIS Web Application Name" description="" value="zapfinance-ascwfddvhrcpbrbt" tags="IisApp">
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^C:\\Users\\pedro\.dota\\Desktop\\ZapFinance\\SERVICES\\Core\.Service\\Core\.Service\\bin\\Release\\net9\.0\\linux-x64\\publish\\$" />
+  </parameter>
+</parameters>
