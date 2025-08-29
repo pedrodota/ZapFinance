@@ -10,7 +10,7 @@ public class UsuarioRepository : IUsuarioRepository
 
     public UsuarioRepository(ZapFinanceDbContext context)
     {
-        _context = context;
+        _context = context; 
     }
 
     public async Task<Usuario?> ObterPorIdAsync(Guid id)
